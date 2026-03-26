@@ -1,6 +1,7 @@
 """SQLite exporter implementation."""
 
 import logging
+import re
 import sqlite3
 from typing import Any, List
 
@@ -14,6 +15,8 @@ class SqliteExporter(BaseExporter):
 
     def __init__(self, output_path: str, table_name: str = "items") -> None:
         super().__init__(output_path)
+        if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', table_name):
+            raise ValueError(f"Invalid table name: {table_name}")
         self.table_name = table_name
 
     def export(self, items: List[Any]) -> str:
