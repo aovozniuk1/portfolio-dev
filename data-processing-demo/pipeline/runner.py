@@ -119,6 +119,7 @@ class Pipeline:
         # Cleaned CSV
         csv_path = str(self.output_dir / "cleaned_data.csv")
         CsvLoader(csv_path).load(df_clean)
+        # TODO: add parquet support
         logger.info("Exported cleaned CSV: %s", csv_path)
 
         # Summary JSON report

@@ -1,5 +1,3 @@
-"""JSON loader for the ETL pipeline."""
-
 import json
 import logging
 

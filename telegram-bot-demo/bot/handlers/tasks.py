@@ -31,14 +31,14 @@ WAITING_TITLE, WAITING_DESCRIPTION, WAITING_PRIORITY = range(3)
 
 
 def _get_services(context: ContextTypes.DEFAULT_TYPE) -> tuple:
-    """Extract services from bot_data."""
+    # pull task + user services from bot_data
     return context.bot_data["user_service"], context.bot_data["task_service"]
 
 
 async def _get_user_id(
     telegram_id: int, user_service: UserService
 ) -> Optional[int]:
-    """Look up internal user ID from Telegram ID."""
+    # resolve internal user ID from telegram ID
     user = await user_service.get_by_telegram_id(telegram_id)
     return user.id if user else None
 
@@ -47,7 +47,7 @@ async def _get_user_id(
 
 
 async def add_task_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Begin the add-task conversation. Prompt for a title."""
+    # kick off the add-task conversation
     if update.callback_query:
         query = update.callback_query
         await query.answer()
@@ -58,7 +58,7 @@ async def add_task_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
 
 async def receive_title(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    """Store the title and ask for an optional description."""
+    # store title, ask for description
     context.user_data["new_task_title"] = update.message.text.strip()
     await update.message.reply_text(
         "Enter a description (or send /skip to skip):"
@@ -69,7 +69,7 @@ async def receive_title(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
 async def receive_description(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> int:
-    """Store description and ask for priority."""
+    # store description, prompt for priority
     text = update.message.text.strip()
     if text.lower() == "/skip":
         context.user_data["new_task_description"] = None
@@ -85,7 +85,7 @@ async def receive_description(
 async def receive_priority(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> int:
-    """Create the task with selected priority."""
+    # finalize task creation with chosen priority
     query = update.callback_query
     await query.answer()
 
@@ -123,7 +123,6 @@ async def receive_priority(
 async def cancel_conversation(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ) -> int:
-    """Cancel the current conversation."""
     await update.message.reply_text(
         "Cancelled.", reply_markup=main_menu_keyboard()
     )

@@ -51,7 +51,6 @@ class BooksScraper(BaseScraper):
         return f"{self.base_url}/catalogue/page-{page_number}.html"
 
     def _resolve_category(self) -> None:
-        """Find the URL for the requested category from the sidebar."""
         if not self.category:
             return
 
@@ -118,7 +117,6 @@ class BooksScraper(BaseScraper):
         return books
 
     def _enrich_book(self, book: Book, url: str) -> None:
-        """Fetch the detail page to fill in UPC, description, and image URL."""
         html = self.fetch_page(url)
         if not html:
             return
@@ -144,7 +142,6 @@ class BooksScraper(BaseScraper):
 
     @staticmethod
     def _parse_price(price_str: str) -> float:
-        """Convert a price string like '£51.77' to a float."""
         cleaned = re.sub(r"[^\d.]", "", price_str)
         try:
             return float(cleaned)
@@ -153,7 +150,6 @@ class BooksScraper(BaseScraper):
 
     @staticmethod
     def _parse_rating(element) -> int:
-        """Extract numeric rating from CSS class like 'star-rating Three'."""
         if not element:
             return 0
         classes = element.get("class", [])

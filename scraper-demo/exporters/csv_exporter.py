@@ -1,5 +1,3 @@
-"""CSV exporter implementation."""
-
 import csv
 import logging
 from typing import Any, List

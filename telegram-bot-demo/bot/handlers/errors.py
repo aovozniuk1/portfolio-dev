@@ -1,5 +1,3 @@
-"""Global error handler for the bot."""
-
 import logging
 import traceback
 

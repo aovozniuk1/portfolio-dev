@@ -115,7 +115,7 @@ class DataValidator:
         if not EMAIL_REGEX.match(email):
             errors.append("invalid_email")
 
-        # Region
+        # Region — quick fix for edge case where pandas reads NaN as string
         region = str(row["region"]).strip()
         if not region or region.lower() == "nan":
             errors.append("empty_region")

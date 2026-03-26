@@ -1,5 +1,3 @@
-"""Inline keyboard builders for the bot."""
-
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
 from bot.models.task import Task, TaskPriority, TaskStatus
