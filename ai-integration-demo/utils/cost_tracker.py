@@ -7,19 +7,19 @@ from models.schemas import UsageStats
 
 logger = logging.getLogger(__name__)
 
-# Approximate pricing per 1K tokens (USD) — GPT-3.5-turbo as of early 2024
+# Approximate pricing per 1K tokens (USD) — as of 2025
 PRICING = {
-    "gpt-3.5-turbo": {"input": 0.0005, "output": 0.0015},
-    "gpt-4": {"input": 0.03, "output": 0.06},
+    "gpt-4o": {"input": 0.0025, "output": 0.01},
+    "gpt-4o-mini": {"input": 0.00015, "output": 0.0006},
     "gpt-4-turbo": {"input": 0.01, "output": 0.03},
-    "gpt-4o": {"input": 0.005, "output": 0.015},
+    "gpt-4": {"input": 0.03, "output": 0.06},
 }
 
 
 class CostTracker:
     """Accumulates token usage and estimates cost across multiple API calls."""
 
-    def __init__(self, model: str = "gpt-3.5-turbo") -> None:
+    def __init__(self, model: str = "gpt-4o-mini") -> None:
         self.model = model
         self.total_prompt_tokens = 0
         self.total_completion_tokens = 0
@@ -69,7 +69,7 @@ class CostTracker:
 
     def _estimate_cost(self, prompt_tokens: int, completion_tokens: int) -> float:
         """Calculate estimated cost in USD."""
-        prices = PRICING.get(self.model, PRICING["gpt-3.5-turbo"])
+        prices = PRICING.get(self.model, PRICING["gpt-4o-mini"])
         input_cost = (prompt_tokens / 1000) * prices["input"]
         output_cost = (completion_tokens / 1000) * prices["output"]
         return input_cost + output_cost
