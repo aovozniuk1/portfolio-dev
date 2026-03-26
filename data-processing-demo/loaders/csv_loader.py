@@ -1,5 +1,3 @@
-"""CSV loader for the ETL pipeline."""
-
 import logging
 
 import pandas as pd

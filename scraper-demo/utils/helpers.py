@@ -1,5 +1,3 @@
-"""Utility helpers shared across scrapers."""
-
 import random
 
 USER_AGENTS = [
@@ -13,5 +11,4 @@ USER_AGENTS = [
 
 
 def get_random_user_agent() -> str:
-    """Return a random User-Agent string for request rotation."""
     return random.choice(USER_AGENTS)

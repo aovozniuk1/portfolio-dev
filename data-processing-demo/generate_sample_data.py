@@ -1,5 +1,3 @@
-"""Generate a realistic sample sales dataset for pipeline testing."""
-
 import csv
 import random
 from datetime import datetime, timedelta

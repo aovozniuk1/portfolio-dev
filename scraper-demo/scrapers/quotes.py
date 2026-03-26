@@ -71,7 +71,6 @@ class QuotesScraper(BaseScraper):
         return quotes
 
     def _fetch_author_details(self, url: str, name: str) -> Optional[Author]:
-        """Fetch detailed author info from their profile page."""
         html = self.fetch_page(url)
         if not html:
             return None

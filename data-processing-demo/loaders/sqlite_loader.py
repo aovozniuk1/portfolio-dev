@@ -1,5 +1,3 @@
-"""SQLite loader for the ETL pipeline."""
-
 import logging
 import sqlite3
 
