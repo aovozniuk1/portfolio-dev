@@ -2,6 +2,7 @@
 
 import logging
 import time
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,6 +20,15 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # startup
+    Base.metadata.create_all(bind=engine)
+    logger.info("Database tables created")
+    yield
+    # shutdown
+
+
 def create_app() -> FastAPI:
     """Create and configure the FastAPI application."""
     app = FastAPI(
@@ -27,12 +37,13 @@ def create_app() -> FastAPI:
         description="REST API for user and task management with authentication, pagination, and filtering.",
         docs_url="/docs",
         redoc_url="/redoc",
+        lifespan=lifespan,
     )
 
     # CORS
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=settings.allowed_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -58,12 +69,6 @@ def create_app() -> FastAPI:
 
     # Routers
     app.include_router(api_router)
-
-    # Create tables on startup
-    @app.on_event("startup")
-    def on_startup():
-        Base.metadata.create_all(bind=engine)
-        logger.info("Database tables created")
 
     return app
 
