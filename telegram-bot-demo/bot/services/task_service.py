@@ -1,7 +1,7 @@
 """Service layer for task operations."""
 
 import logging
-from datetime import datetime
+from datetime import UTC, datetime
 from typing import List, Optional
 
 import aiosqlite
@@ -110,7 +110,7 @@ class TaskService:
         """
         conn = await self._get_conn()
         try:
-            now = datetime.utcnow().isoformat()
+            now = datetime.now(UTC).isoformat()
             completed_at = now if new_status == TaskStatus.COMPLETED else None
 
             result = await conn.execute(
